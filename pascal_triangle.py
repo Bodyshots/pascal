@@ -22,7 +22,7 @@ class Queue:
     def is_empty(self): return len(self) == 0
 
     def empty_queue(self):
-        for i in range(len(self._elems)): self.dequeue()
+        for _ in range(len(self._elems)): self.dequeue()
 
 
 class PascalBST:
@@ -105,17 +105,16 @@ class PascalTriangle:
         term_width = get_terminal_size().columns
         queue.enqueue(self.top)
         while not queue.is_empty():
-            result_str += "\n"
             curr_node = queue.dequeue()
 
             nodes_in_lvl += 1
             if row_num + 1 == nodes_in_lvl:
-                result_str += f"{str(curr_node.root)}\n".center(term_width)
+                result_str += f"{str(curr_node.root)}\n"
                 # prep for next lvl
                 nodes_in_lvl = 0
                 row_num += 1
 
-            else: result_str += f"{str(curr_node.root)}  ".center(term_width)
+            else: result_str += f"{str(curr_node.root)} "
             if curr_node.left and curr_node.left.colour == 0:
                 if (curr_node.left.root):
                     curr_node.left.colour = 1
@@ -125,7 +124,9 @@ class PascalTriangle:
                     curr_node.right.colour = 1
                     queue.enqueue(curr_node.right)
             curr_node.colour = 1
-        return result_str
+        # credit to Zenith for the return statement:
+        # https://stackoverflow.com/questions/62549176/python-how-to-center-a-multiline-string-containing-n-for-printing-in-the-ce 
+        return "\n".join(line.center(term_width) for line in result_str.split("\n"))
 
     def get_row(self, row_num):
         if row_num == 0:
