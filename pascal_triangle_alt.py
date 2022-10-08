@@ -150,6 +150,3 @@ class PascalTriangle:
             row_entries[node].right = PascalBST(None)
 
         return row_entries
-
-if __name__ == "__main__":
-    print(PascalTriangle(20))
