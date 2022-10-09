@@ -144,7 +144,6 @@ class PascalTriangle:
         row_entries.extend([PascalBST() for _ in range(next_row_num - 1)])
         row_entries.append(PascalBST(1))
         
-        prev_row = self.get_row(next_row_num - 1)
         for node in range(1, len(row_entries) - 1): # could be improved???
             row_entries[node].root = prev_row[node - 1].root + prev_row[node].root
             row_entries[node].left = PascalBST(None)
