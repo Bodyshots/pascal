@@ -24,14 +24,42 @@ class PascalPyramid:
     
     def get_next_layer(self, prev_layer: List[List[Pascal3DElem]]):
         """
-        Structure of a layer will be a list with lists of decreasing length
+        The structure of a layer will be a list with lists of 
+        decreasing length
 
         Eg.
-        
         Layer 0: [[1]]
         Layer 1: [[1, 1], [1]]
         Layer 2:[[1, 2, 1], [2, 2], [1]]
         Layer 3: [[1, 3, 3, 1], [3, 6, 3], [3, 3], [1]]
+
+        Neat observations:
+        1. The bottom row (ie. the base of a layer, or the row w/ the most
+         amount of entries) of an nth layer has a sum of 2 ** n
+        2. The corners of a layer are always 1
+            a) The adjacent entries to these corners always correspond to
+            the current layer number
+        3. The "middle" of a layer always contains the greatest number
+            a) Every third layer only has one number that is the greatest
+            among all entries
+                i) This entry will always be surrounded by six identical 
+                entries that are the second-most greatest among all entries
+            b) Otherwise, the layer will have three identical entries that are the
+            greatest among all entries
+        4. The sum of the nth layer is 3 ** n
+        5. Every layer is symmetric in three ways (from each side of a layer)
+        6. All sides of a layer correspond to the mth row of Pascal's Triangle
+        7. The number of elements in the nth layer is nth element in the sequence
+        of triangular numbers (ie. 1, 3, 6, 10, 15,...)
+            a) "Triangular" numbers as in the number of items (eg. balls) needed
+            to make a triangle
+            b) This can also be interpreted as being the greatest number in
+            Pascal Triangle's third column
+            c) Formula of this sequence is ((n + 1)(n + 2)/2) (via Wikipedia),
+            which is similar to the closed-form expression to sum the
+            sequence 1 + 2 + 3 + 4 +...+ n.
+        8. Each entry in the nth layer corresponds to a number in a trinomial
+        raised to the n after being expanded.
 
         """
 
@@ -52,13 +80,6 @@ class PascalPyramid:
         from os import get_terminal_size
         term_width = get_terminal_size().columns
         result_str = ""
-        # Version 1
-        # for layer_num in range(len(self.layers)):
-        #     result_str += (f"Layer {layer_num}: "
-        #                +   str(self.layer_str(self.layers[layer_num])).center(term_width)
-        #                +   "\n")
-        # return result_str.rstrip("\n")
-        # Version 2
         for layer in self.layers:
             curr_layer = self.layer_str(layer)[::-1]
             for row_num, row in enumerate(curr_layer): 
@@ -70,7 +91,7 @@ class PascalPyramid:
                     result_str += f"Layer {row_num}\n\n"
         return "\n".join(line.center(term_width) for line in result_str.split("\n"))
 
-    def layer_str(self, layer):
+    def layer_str(self, layer: List[List[Pascal3DElem]]):
         layer_lst = []
         for row in layer:
             result_row = []
@@ -80,11 +101,22 @@ class PascalPyramid:
 
         return layer_lst
 
-    def layer_sum(self, layer_num):
+    def layer_sum(self, layer_num: int):
+        """
+        As a result of observation 4 in the get_next_layer function
+        """
         return 3 ** layer_num
 
-    def nth_dimensional_layer(self, dimension, layer_num):
-        return dimension ** layer_num
+    def nth_dimensional_layer(self, dimension: int, iteration: int):
+        """
+        Taking into account that the sum of Pascal's Triangle is
+        2 ** n, where n is the height of the triangle, and the sum
+        of Pascal's Pyramid (observation 4), we could predict the
+        sum of any "Pascellian" structure to be dimension ** iteration.
+
+        The proof of this fact is left as an exercise to the reader.
+        """
+        return dimension ** iteration
 
 if __name__ == "__main__":
     test = PascalPyramid(20)
