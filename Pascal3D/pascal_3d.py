@@ -39,10 +39,9 @@ class PascalPyramid:
         2. The corners of a layer are always 1
             a) The adjacent entries to these corners always correspond to
             the current layer number
-        3. The "middle" of a layer always contains the greatest number
-            a) Every third layer only has one number that is the greatest
-            among all entries
-                i) This entry will always be surrounded by six identical 
+        3. Every third layer only has one number that is the greatest
+        among all entries
+            a) This entry will always be surrounded by six identical 
                 entries that are the second-most greatest among all entries
             b) Otherwise, the layer will have three identical entries that are the
             greatest among all entries
@@ -118,6 +117,18 @@ class PascalPyramid:
         """
         return dimension ** iteration
 
+    def find_pyramid_max(self):
+        return self.find_max(self.layers[len(self.layers) - 1])
+
+    def find_max(self, layer: List[List[Pascal3DElem]]):
+        layer_num = len(layer) - 1
+        first_index = layer_num - (int(round(layer_num / 3)))
+        second_index = (int(round(layer_num / 3)))
+        return layer[::-1][first_index][second_index].elem
+
 if __name__ == "__main__":
-    test = PascalPyramid(20)
-    print(test)
+    test = PascalPyramid(21)
+    print(test.find_max([[Pascal3DElem(1), Pascal3DElem(3), Pascal3DElem(3), Pascal3DElem(1)],
+                         [Pascal3DElem(3), Pascal3DElem(6), Pascal3DElem(3)], 
+                         [Pascal3DElem(3), Pascal3DElem(3)], [Pascal3DElem(1)]]))
+    print(test.find_pyramid_max())
