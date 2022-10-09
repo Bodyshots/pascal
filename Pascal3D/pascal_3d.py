@@ -1,4 +1,3 @@
-from turtle import right
 from typing import List
 
 class Pascal3DElem:
@@ -16,15 +15,12 @@ class PascalPyramid:
     
     """
     def __init__(self, layers):
-        return
         if (layers == 0):
-            self.layers = [[[1]]]
-            return Pascal3DElem(1)
-
-        self.layers = [[1]]
-        for _ in range(layers + 1):
-            self.layers.append(self.get_next_layer(self.layers))
-        
+            self.layers = [[[Pascal3DElem(1)]]]
+        else:
+            self.layers = [[[Pascal3DElem(1)]]]
+            for i in range(layers):
+                self.layers.append(self.get_next_layer(self.layers[i]))
     
     def get_next_layer(self, prev_layer: List[List[Pascal3DElem]]):
         """
@@ -33,11 +29,8 @@ class PascalPyramid:
         Eg.
         
         Layer 0: [[1]]
-
         Layer 1: [[1, 1], [1]]
-
         Layer 2:[[1, 2, 1], [2, 2], [1]]
-
         Layer 3: [[1, 3, 3, 1], [3, 6, 3], [3, 3], [1]]
 
         """
@@ -45,31 +38,54 @@ class PascalPyramid:
         next_layer = []
         for i in range(len(prev_layer[0]) + 1, 0, -1):
             next_layer.append([Pascal3DElem() for _ in range(i)])
-        
+
         for row_num in range(len(prev_layer)):
-
             for entry_index in range(len(prev_layer[row_num])):
-
                 curr_elem = prev_layer[row_num][entry_index].elem
                 next_layer[row_num][entry_index].elem += curr_elem # top left
-                next_layer[row_num][entry_index + 1].elem += curr_elem
-                next_layer[row_num + 1][entry_index].elem += curr_elem
+                next_layer[row_num][entry_index + 1].elem += curr_elem # top right
+                next_layer[row_num + 1][entry_index].elem += curr_elem # down
 
         return next_layer
 
-if __name__ == "__main__":
-    test = PascalPyramid(1)
-    test_layer1 = test.get_next_layer([[Pascal3DElem(1)]])
-    test_layer2 = test.get_next_layer([[Pascal3DElem(1), Pascal3DElem(1)], [Pascal3DElem(1)]])
+    def __str__(self):
+        from os import get_terminal_size
+        term_width = get_terminal_size().columns
+        result_str = ""
+        # Version 1
+        # for layer_num in range(len(self.layers)):
+        #     result_str += (f"Layer {layer_num}: "
+        #                +   str(self.layer_str(self.layers[layer_num])).center(term_width)
+        #                +   "\n")
+        # return result_str.rstrip("\n")
+        # Version 2
+        for layer in self.layers:
+            curr_layer = self.layer_str(layer)[::-1]
+            for row_num, row in enumerate(curr_layer): 
+                for element in row:
+                    result_str += f"{str(element)} "
+                result_str += "\n"
+                # result_str += str(row) + "\n" => for [] on each row
+                if (row_num == len(curr_layer) - 1): 
+                    result_str += f"Layer {row_num}\n\n"
+        return "\n".join(line.center(term_width) for line in result_str.split("\n"))
 
-    def get_output(output_layer):
-        output = []
-        for row in output_layer:
+    def layer_str(self, layer):
+        layer_lst = []
+        for row in layer:
             result_row = []
             for element in row:
                 result_row.append(element.elem)
-            output.append(result_row)
+            layer_lst.append(result_row)
 
-        return output
+        return layer_lst
 
-    print(get_output(test.get_next_layer(test_layer2)))
+    def layer_sum(self, layer_num):
+        return 3 ** layer_num
+
+    def nth_dimensional_layer(self, dimension, layer_num):
+        return dimension ** layer_num
+
+if __name__ == "__main__":
+    test = PascalPyramid(20)
+    print(test)
