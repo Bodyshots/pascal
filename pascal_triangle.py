@@ -40,7 +40,7 @@ class PascalBST:
     def __str__(self): return str(self.root)
 
 class PascalTriangle:
-    def __init__(self, row_num):
+    def __init__(self, row_num: int):
         if row_num >= 0:
             self.top = PascalBST(1)
             self.vertices = [self.top] # note: technically, self.vertices can basically represent
@@ -129,7 +129,7 @@ class PascalTriangle:
         return "\n".join(line.center(term_width) for line in result_str.split("\n"))
         # return result_str # => Meru Prastaara ver (left-aligned)
 
-    def get_row(self, row_num):
+    def get_row(self, row_num: int) -> List["PascalBST"]:
         if row_num == 0:
             return [PascalBST(1)]
         if row_num == 1:
@@ -138,7 +138,7 @@ class PascalTriangle:
         # row_num >= 2
         return self.get_next_row(self.get_row(row_num - 1))
 
-    def get_next_row(self, prev_row):
+    def get_next_row(self, prev_row: List["PascalBST"]) -> List["PascalBST"]:
         next_row_num = len(prev_row)
         row_entries = [PascalBST(1)]
         row_entries.extend([PascalBST() for _ in range(next_row_num - 1)])
