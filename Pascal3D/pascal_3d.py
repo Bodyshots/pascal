@@ -59,6 +59,12 @@ class PascalPyramid:
             sequence 1 + 2 + 3 + 4 +...+ n.
         8. Each entry in the nth layer corresponds to a number in a trinomial
         raised to the n after being expanded.
+        9. Considering how a 2D and 3D Pascal shape is modelled using lists, 
+        one could assume that a "4D Pascal Shape" would consist of 4 nested lists,
+        with the second-nested list being the structure for a 3D Pascal Pyramid.
+            a) From this, one could assume that making a Pascal shape in n
+            dimensions would take at least n nested lists (to be proven).
+             
 
         """
 
@@ -124,11 +130,4 @@ class PascalPyramid:
         layer_num = len(layer) - 1
         first_index = layer_num - (int(round(layer_num / 3)))
         second_index = (int(round(layer_num / 3)))
-        return layer[::-1][first_index][second_index].elem
-
-if __name__ == "__main__":
-    test = PascalPyramid(21)
-    print(test.find_max([[Pascal3DElem(1), Pascal3DElem(3), Pascal3DElem(3), Pascal3DElem(1)],
-                         [Pascal3DElem(3), Pascal3DElem(6), Pascal3DElem(3)], 
-                         [Pascal3DElem(3), Pascal3DElem(3)], [Pascal3DElem(1)]]))
-    print(test.find_pyramid_max())
+        return layer[first_index][second_index].elem
