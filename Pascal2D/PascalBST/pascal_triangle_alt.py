@@ -136,17 +136,18 @@ class PascalTriangle:
             return [PascalBST(1), PascalBST(1)]
 
         # row_num >= 2
-        return self.get_next_row(self.get_row(row_num - 1))
-
-    def get_next_row(self, prev_row):
-        next_row_num = len(prev_row)
         row_entries = [PascalBST(1)]
-        row_entries.extend([PascalBST() for _ in range(next_row_num - 1)])
+        row_entries.extend([PascalBST() for _ in range(row_num - 1)])
         row_entries.append(PascalBST(1))
         
-        for node in range(1, len(row_entries) - 1): # could be improved???
+        prev_row = self.get_row(row_num - 1)
+        for node in range(1, len(row_entries) - 1):
             row_entries[node].root = prev_row[node - 1].root + prev_row[node].root
             row_entries[node].left = PascalBST(None)
             row_entries[node].right = PascalBST(None)
 
         return row_entries
+
+if __name__ == "__main__":
+    test = PascalTriangle(7)
+    print(test)
