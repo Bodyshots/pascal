@@ -35,7 +35,7 @@ class PascalBST:
             self.right = PascalBST(right)
 
         self.root = elem
-        self.colour = 0 # white => 1, black => 0
+        self.colour = 0 # black => 1, white => 0
     
     def __str__(self): return str(self.root)
 
@@ -127,6 +127,7 @@ class PascalTriangle:
         # credit to Zenith for the return statement:
         # https://stackoverflow.com/questions/62549176/python-how-to-center-a-multiline-string-containing-n-for-printing-in-the-ce 
         return "\n".join(line.center(term_width) for line in result_str.split("\n"))
+        # return result_str # => Meru Prastaara ver (left-aligned)
 
     def get_row(self, row_num):
         if row_num == 0:
@@ -148,5 +149,5 @@ class PascalTriangle:
         return row_entries
 
 if __name__ == "__main__":
-    test = PascalTriangle(6)
+    test = PascalTriangle(7)
     print(test)
